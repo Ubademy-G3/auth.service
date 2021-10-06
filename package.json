@@ -1,0 +1,39 @@
+{
+  "name": "users.service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon",
+    "lint": "eslint --ext .js -f ./node_modules/eslint-friendly-formatter . --fix",
+    "start": "node app.js",
+    "test": "jest && codecov",
+    "test:coverage": "jest --verbose --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ubademy-G3/users.service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ubademy-G3/users.service/issues"
+  },
+  "homepage": "https://github.com/Ubademy-G3/users.service#readme",
+  "devDependencies": {
+    "codecov": "^3.8.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "husky": "^2.3.0",
+    "jest": "^27.2.4",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-plugin-html": "^5.0.5",
+    "express": "^4.17.1",
+    "pg": "^8.0.3"
+  }
+}

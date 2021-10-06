@@ -1,0 +1,26 @@
+version: '3'
+services: 
+  postgres:
+    image: postgres
+    container_name: psql-container
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - my-network
+
+  node:
+    build: .
+    container_name: node
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgres://postgres:postgres@psql-container:5432/postgres
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
