@@ -1,4 +1,4 @@
-hostname: monitoring-app
+hostname: auth-service
 listeners:
   - name: docker
 config_providers:

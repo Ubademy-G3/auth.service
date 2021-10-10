@@ -31,7 +31,7 @@ COPY app.js /app/
 
 ENV PORT=3000
 
-EXPOSE 3000
+#EXPOSE 3000
 
 # Expose DogStatsD and trace-agent ports
 EXPOSE 8125/udp 8126/tcp

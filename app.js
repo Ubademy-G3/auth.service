@@ -3,11 +3,24 @@ const { Client } = require('pg');
 
 const app = express();
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  query_timeout: 1000,
-  statement_timeout: 1000
-});
+var client;
+if (process.env.NODE_ENV !== 'stage') {
+    client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      query_timeout: 1000,
+      statement_timeout: 1000,
+      ssl: false
+    }); 
+} else {
+    client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      query_timeout: 1000,
+      statement_timeout: 1000,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    });
+}
 
 client.connect();
 
