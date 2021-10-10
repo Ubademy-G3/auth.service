@@ -1,5 +1,19 @@
 version: '3'
 services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      - MONGO_INITDB_ROOT_PASSWORD=hola
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_DATABASE=test
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - my-network
+
   node:
     build: .
     container_name: node
@@ -7,9 +21,14 @@ services:
       - PORT=3000
     ports:
       - 3000:3000
+    depends_on:
+      - mongo
     networks:
       - my-network
 
 networks:
   my-network:
     driver: bridge
+
+volumes:
+ mongodb:
