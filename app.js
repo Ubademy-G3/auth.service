@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 
 var client = require('mongoose');
-client.connect('mongodb://mongo/test', {useNewUrlParser: true});
+
+client.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 
 app.get('/ping', (req, res) => res.send('Pong!'));
 

@@ -19,6 +19,7 @@ services:
     container_name: node
     environment:
       - PORT=3000
+      - MONGODB_URI=mongodb://mongo/test
     ports:
       - 3000:3000
     depends_on:
