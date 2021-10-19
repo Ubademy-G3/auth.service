@@ -16,12 +16,15 @@ services:
 
   node:
     build: .
-    container_name: node
     environment:
-      - PORT=3000
+      - PORT=3005
       - MONGODB_URI=mongodb://mongo/test
     ports:
-      - 3000:3000
+      - 3005:3005
+    volumes:
+      - .:/app/
+      - /app/node_modules/
+      - /app/deploy/
     depends_on:
       - mongo
     networks:

@@ -1,5 +1,10 @@
 FROM node:latest
 
+WORKDIR /app/
+
+# Copy Datadog configuration
+COPY /monitoring/ /etc/datadog-agent/
+
 # Install Heroku GPG dependencies
 RUN apt-get install -y gpg apt-transport-https gpg-agent curl ca-certificates
 
@@ -18,31 +23,19 @@ RUN curl -o /tmp/DATADOG_APT_KEY_382E94DE.public "${DATADOG_APT_KEYS_URL}/DATADO
 # Install the Datadog agent
 RUN apt-get update && apt-get -y --force-yes install --reinstall datadog-agent
 
-WORKDIR /app
-
-#ADD monitoring/ monitoring/
-COPY /deploy/ ./
-
-COPY package* /app/
-
-RUN npm install
-
-COPY app.js /app/
-
-ENV PORT=3000
-
-#EXPOSE 3000
-
 # Expose DogStatsD and trace-agent ports
 EXPOSE 8125/udp 8126/tcp
-
 ENV DD_APM_ENABLED=true
 
-#ENTRYPOINT ["node", "app.js"]
+ENV PORT=3005
 
-##CMD npm start
+COPY package*.json /app/
+RUN npm install
 
-# Copy Datadog configuration
-COPY /monitoring/ /etc/datadog-agent/
+COPY . /app/
+
+RUN apt-get install dos2unix
+RUN dos2unix /app/deploy/heroku-entrypoint.sh
+
 # Use heroku entrypoint
-CMD ["bash", "heroku-entrypoint.sh"]
+CMD ["sh", "/app/deploy/heroku-entrypoint.sh"]
