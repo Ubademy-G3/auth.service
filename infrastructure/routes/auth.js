@@ -1,13 +1,11 @@
 const express = require("express");
+const AuthController = require("../../application/controllers/AuthController");
 
 const router = express.Router();
 
-// Home page route
-router.get("/", (req, res) => {
-  res.send("Página de inicio");
-});
+router.route("/users").get(AuthController.getAll);
+router.route("/register").post(AuthController.register);
 
-// Id page route
 router.get("/:id", (req, res) => {
   res.send("Acerca de esta wiki");
 });
