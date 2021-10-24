@@ -8,17 +8,22 @@ module.exports = class extends UserRepository {
     }
 
     async create(newUser) {
-        console.log(newUser);
-        const {email, password} = newUser;
-        const token = "ASDJKNFEKF"; //GENERARLO
-        const mongooseUser = new MongooseUser({ email, password, token });
+        const { email, password, salt } = newUser;
+        const mongooseUser = new MongooseUser({ email, password, salt });
         await mongooseUser.save();
-        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token);
+        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
     }
 
     async get(userId) {
         const mongooseUser = await MongooseUser.findById(userId);
-        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token);
+        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
+    }
+
+    async getByEmail(email) {
+        const mongooseUser = await MongooseUser.findOne({ email: email });
+        console.log("get by emial result")
+        console.log(mongooseUser)
+        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
     }
 
     async getAll() {
@@ -26,14 +31,14 @@ module.exports = class extends UserRepository {
         const mongooseUsers = await MongooseUser.find();
         console.log("after find")
         return mongooseUsers.map((mongooseUser) => {
-            return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token);
+            return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
         });
     }
 
     async update(userEntity) {
         const {id, email, password, token} = userEntity;
         const mongooseUser = MongooseUser.findByIdAndUpdate(id, {email, password, token});
-        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token);
+        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
     }
 
     async delete(userId) {

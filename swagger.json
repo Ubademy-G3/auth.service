@@ -34,7 +34,7 @@
                 "description": "Returns a list containing all users",
                 "responses": {
                     "200": {
-                        "description": "A list of an user",
+                        "description": "A list of a user",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -59,7 +59,7 @@
                 }
             }
         },
-        "/register": {
+        "/signup": {
             "post": {
                 "summary": "Register a new user",
                 "description": "Returns created user",
@@ -87,6 +87,58 @@
                 "responses": {
                     "200": {
                         "description": "New user info",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    },
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "summary": "Log a user",
+                "description": "Returns logged user",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to log",
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logged user info",
                         "schema": {
                             "type": "object",
                             "items": {

@@ -3,8 +3,13 @@ const AuthController = require("../../application/controllers/AuthController");
 
 const router = express.Router();
 
+// Basic CRUD
 router.route("/users").get(AuthController.getAll);
-router.route("/register").post(AuthController.register);
+router.route("/users/:id").get(AuthController.get);
+
+// Register & Login
+router.route("/signup").post(AuthController.signup);
+router.route("/login").post(AuthController.login);
 
 router.get("/:id", (req, res) => {
   res.send("Acerca de esta wiki");
