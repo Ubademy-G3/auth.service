@@ -10,6 +10,7 @@ module.exports = async (userRepository, userInfo) => {
         // validate password
         const valid = hasher.validPassword(userInfo.password, maybeUser.password, maybeUser.salt);
         console.log(valid);
+        // falta generar JWT
         if (valid) {
             return maybeUser;
         }

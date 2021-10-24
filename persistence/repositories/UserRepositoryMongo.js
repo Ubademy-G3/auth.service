@@ -10,8 +10,12 @@ module.exports = class extends UserRepository {
     async create(newUser) {
         const { email, password, salt } = newUser;
         const mongooseUser = new MongooseUser({ email, password, salt });
-        await mongooseUser.save();
-        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
+        try {
+            const user = await mongooseUser.save()
+            return new User(user.id, user.email, user.password, user.token, user.salt);
+        } catch(e) {
+            return e
+        }
     }
 
     async get(userId) {
@@ -20,10 +24,17 @@ module.exports = class extends UserRepository {
     }
 
     async getByEmail(email) {
-        const mongooseUser = await MongooseUser.findOne({ email: email });
-        console.log("get by emial result")
-        console.log(mongooseUser)
-        return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
+        try {
+            const mongooseUser = await MongooseUser.findOne({ email: email })
+            if (mongooseUser) {
+                return new User(mongooseUser.id, mongooseUser.email, mongooseUser.password, mongooseUser.token, mongooseUser.salt);
+            } else {
+                return null
+            }
+        } catch(err) {
+            console.log(err)
+            return err;
+        }
     }
 
     async getAll() {

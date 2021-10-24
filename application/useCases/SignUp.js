@@ -1,14 +1,23 @@
 const hasher = require("../../infrastructure/security/HashManager");
+const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
+const { BadRequestError } = require("../../errors/BadRequestError");
 
-module.exports = (userRepository, userInfo) => {
-    console.log(userInfo);
+module.exports = async (userRepository, userInfo) => {
+    if (!userInfo.email || !userInfo.password) {
+        throw new BadRequestError('Bad request');
+    }
 
-    const cred = hasher.setPassword(userInfo.password);
-    userInfo.password = cred.hash;
-    console.log("pwd");
-    console.log(userInfo.password)
-    userInfo.salt  = cred.salt;
-
-    //VALIDAR QUE NO ESTE REPETIDO EL EMAIL
-    return userRepository.create(userInfo);
+    try {
+        const userAlreadyExists = await userRepository.getByEmail(userInfo.email)
+        if (userAlreadyExists) {
+            throw new UserAlreadyExistsError('User already exists with given email');
+        }
+        const cred = hasher.setPassword(userInfo.password);
+        userInfo.password = cred.hash;
+        userInfo.salt  = cred.salt;
+        const user = await userRepository.create(userInfo); 
+        return user
+    } catch(e) {
+        throw e
+    }
 };
