@@ -2,7 +2,7 @@ const ListUsers = require('../useCases/ListUsers');
 const RegisterUser = require('../useCases/SignUp');
 const LogUser = require('../useCases/Login');
 const Repository = require('../../persistence/repositories/UserRepositoryMongo');
-const serializer = require('../serializers/UserSerializer');
+const serialize = require('../serializers/UserSerializer');
 const jwt = require('../../infrastructure/security/JWTManager');
 const { UserAlreadyExistsError } = require('../../errors/UserAlreadyExistsError');
 const { BadRequestError } = require('../../errors/BadRequestError');
@@ -22,7 +22,7 @@ exports.get = async (req, res, next) => {
 exports.signup = async (req, res, next) => {
     RegisterUser(repo, req.body)
         .then((user) => {
-            return res.status(200).json(user);
+            return res.status(200).json(serialize(user));
         })
         .catch((err) => {
             if (err instanceof UserAlreadyExistsError) {
