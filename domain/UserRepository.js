@@ -1,21 +1,21 @@
 module.exports = class {
-    create(user) {
-        throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-    }
+  static create() {
+    throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
+  }
 
-    delete(user) {
-        throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-    }
+  static delete() {
+    throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
+  }
 
-    update(user) {
-        throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-    }
+  static update() {
+    throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
+  }
 
-    get(userId) {
-        throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-    }
+  static get() {
+    throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
+  }
 
-    getAll() {
-        throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-    }
-}
+  static getAll() {
+    throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
+  }
+};

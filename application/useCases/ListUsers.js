@@ -1,3 +1,1 @@
-module.exports = (userRepository) => {
-    return userRepository.getAll();
-};
+module.exports = (userRepository) => userRepository.getAll();
