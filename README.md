@@ -9,7 +9,7 @@ Directory structure:
 ├── src
 │   ├── infrastructure
 │   │   ├── db
-│   │   │   └──  UserShemas.js  
+│   │   │   └──  UserSchema.js  
 │   │   ├── routes
 │   │   │   └──  Auth.js
 │   │   └── security
