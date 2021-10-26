@@ -4,7 +4,7 @@ const { BadRequestError } = require("../../errors/BadRequestError");
 
 module.exports = async (userRepository, userInfo) => {
   if (!userInfo.email || !userInfo.password) {
-    throw new BadRequestError("Bad request");
+    throw new BadRequestError("Missing required fields");
   }
   const userAlreadyExists = await userRepository.getByEmail(userInfo.email);
   if (userAlreadyExists) {

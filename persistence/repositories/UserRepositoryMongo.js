@@ -56,9 +56,11 @@ module.exports = class extends UserRepository {
 
   static async update(userEntity) {
     const {
-      id, email, password, token,
+      id, email, password, token, salt,
     } = userEntity;
-    const mongooseUser = MongooseUser.findByIdAndUpdate(id, { email, password, token });
+    const mongooseUser = await MongooseUser.findByIdAndUpdate(id, {
+      email, password, token, salt,
+    }, { new: true });
     return new User(mongooseUser.id,
       mongooseUser.email,
       mongooseUser.password,

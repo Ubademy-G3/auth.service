@@ -1,5 +1,6 @@
 const app = require("./app");
 const db = require("./infrastructure/db/mongoose");
+require("dotenv").config();
 
 db.connection.once("open", () => {
   // console.log("connected to MongoDB database!");
