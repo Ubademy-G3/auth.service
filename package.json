@@ -34,7 +34,9 @@
     "supertest": "^6.1.6"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-plugin-html": "^5.0.5",
     "express": "^4.17.1",
