@@ -1,11 +1,9 @@
 const { NotFoundError } = require("../../errors/NotFoundError");
 const { UnexpectedError } = require("../../errors/UnexpectedError");
 const { NotAuthorizedError } = require("../../errors/NotAuthorizedError");
-const hasher = require("../../infrastructure/security/HashManager"); // revisar estas dependencias
-const jwt = require("../../infrastructure/security/JWTManager");
 const { BadRequestError } = require("../../errors/BadRequestError");
 
-module.exports = async (userRepository, userInfo) => {
+module.exports = async (userRepository, userInfo, jwt, hasher) => {
   // validate input
   if (!userInfo.email || !userInfo.password) {
     throw new BadRequestError("Missing required fields");

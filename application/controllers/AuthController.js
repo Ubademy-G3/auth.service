@@ -1,7 +1,6 @@
 const ListUsers = require("../useCases/ListUsers");
 const RegisterUser = require("../useCases/SignUp");
 const LogUser = require("../useCases/Login");
-const repo = require("../../persistence/repositories/UserRepositoryMongo");
 const serialize = require("../serializers/UserSerializer");
 const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
 const { BadRequestError } = require("../../errors/BadRequestError");
@@ -19,9 +18,12 @@ exports.getAll = async (req, res) => {
 // };
 
 exports.signup = async (req, res) => {
-  RegisterUser(repo, req.body)
+  const repository = req.app.serviceLocator.userRepository
+  const hasher = req.app.serviceLocator.hashManager
+  RegisterUser(repository, req.body, hasher)
     .then((user) => res.status(200).json(serialize(user)))
     .catch((err) => {
+      console.log(err)
       if (err instanceof UserAlreadyExistsError) {
         return res.status(409).send({
           message: err.message,
@@ -39,7 +41,10 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  LogUser(repo, req.body)
+  const repository = req.app.serviceLocator.userRepository
+  const jwt = req.app.serviceLocator.tokenManager
+  const hasher = req.app.serviceLocator.hashManager
+  LogUser(repository, req.body, jwt, hasher)
     .then((user) => res.status(200).json(serialize(user)))
     .catch((err) => {
       if (err instanceof NotFoundError) {

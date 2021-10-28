@@ -1,8 +1,7 @@
-const hasher = require("../../infrastructure/security/HashManager");
 const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
 const { BadRequestError } = require("../../errors/BadRequestError");
 
-module.exports = async (userRepository, userInfo) => {
+module.exports = async (userRepository, userInfo, hasher) => {
   if (!userInfo.email || !userInfo.password) {
     throw new BadRequestError("Missing required fields");
   }
