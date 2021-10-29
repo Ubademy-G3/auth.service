@@ -9,7 +9,7 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
     throw new BadRequestError("Missing required fields");
   }
   // get user by email
-  const maybeUser = await userRepository.getByEmail(userInfo.email);
+  const maybeUser = await userRepository.getBy(userInfo.email);
   if (!maybeUser) {
     throw new NotFoundError("User not found");
   }

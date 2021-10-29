@@ -12,7 +12,7 @@ router.route("/signup").post(AuthController.signup);
 router.route("/login").post(AuthController.login);
 
 // Authentication
-// router.route("/authenticate").post(AuthController.authenticate);
+router.route("/verify-token").get(AuthController.authenticate);
 
 router.get("/:id", (req, res) => {
   res.send("Acerca de esta wiki");

@@ -162,6 +162,40 @@
                     }
                 }
             }
+        },
+        "/verify-token": {
+            "get": {
+                "summary": "Verify user token",
+                "description": "Returns verified token",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "description": "The token to verify"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Authorized",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

@@ -1,6 +1,7 @@
 const ListUsers = require("../useCases/ListUsers");
 const RegisterUser = require("../useCases/SignUp");
 const LogUser = require("../useCases/Login");
+const AuthenticateUser = require("../useCases/AuthenticateUser");
 const serialize = require("../serializers/UserSerializer");
 const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
 const { BadRequestError } = require("../../errors/BadRequestError");
@@ -8,7 +9,8 @@ const { NotFoundError } = require("../../errors/NotFoundError");
 const { NotAuthorizedError } = require("../../errors/NotAuthorizedError");
 
 exports.getAll = async (req, res) => {
-  const users = await ListUsers(repo);
+  const repository = req.app.serviceLocator.userRepository;
+  const users = await ListUsers(repository);
   return res.json(users); // usar serialize
 };
 
@@ -18,12 +20,11 @@ exports.getAll = async (req, res) => {
 // };
 
 exports.signup = async (req, res) => {
-  const repository = req.app.serviceLocator.userRepository
-  const hasher = req.app.serviceLocator.hashManager
+  const repository = req.app.serviceLocator.userRepository;
+  const hasher = req.app.serviceLocator.hashManager;
   RegisterUser(repository, req.body, hasher)
     .then((user) => res.status(200).json(serialize(user)))
     .catch((err) => {
-      console.log(err)
       if (err instanceof UserAlreadyExistsError) {
         return res.status(409).send({
           message: err.message,
@@ -41,9 +42,9 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const repository = req.app.serviceLocator.userRepository
-  const jwt = req.app.serviceLocator.tokenManager
-  const hasher = req.app.serviceLocator.hashManager
+  const repository = req.app.serviceLocator.userRepository;
+  const jwt = req.app.serviceLocator.tokenManager;
+  const hasher = req.app.serviceLocator.hashManager;
   LogUser(repository, req.body, jwt, hasher)
     .then((user) => res.status(200).json(serialize(user)))
     .catch((err) => {
@@ -68,6 +69,11 @@ exports.login = async (req, res) => {
     });
 };
 
-// exports.authenticate = async (req, res, next) => {
-//   //console.log(req.body);
-// };
+exports.authenticate = async (req, res) => {
+  const jwt = req.app.serviceLocator.tokenManager;
+  AuthenticateUser(req.query, jwt)
+    .then((msg) => res.status(200).json(msg))
+    .catch((err) => res.status(500).send({
+      message: `Internal server error ${err.message}`,
+    }));
+};
