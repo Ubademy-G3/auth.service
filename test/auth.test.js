@@ -23,7 +23,7 @@ beforeEach(() => {
     email: "john@doe.com",
     password: "140685ff8c604e2b58a6fa0a376f03af33ce502d1267d8c04835e22d7978ceeb9713118f1cc1813567ffd96c55a7e66839b8ec3ce7ad4070fa2981d2505b7e06",
     salt: "e79d7530a0891964159f56f04d0785b1",
-    token: "TOKEN123",
+    token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MzU0ODEzMTMsImV4cCI6MTY2NzAxNzI2NCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.K6DshQk_f8HZy8N3HGY3dTfYeWQ-cyY9jkHoAwjRLbo",
   };
 });
 
@@ -140,6 +140,35 @@ describe("POST /auth/login", () => {
       .then((response) => {
         const res = JSON.parse(response.text);
         expect(res.message).toBe("Unauthorized");
+      });
+  });
+});
+
+describe("GET /auth/verify-token", () => {
+  beforeEach(() => {
+    mockingoose(model).reset();
+    mockingoose(model).toReturn(mockedUser, "save");
+    process.env.JWT_SECRET_KEY = "test";
+  });
+  afterEach(() => {
+    delete process.env.JWT_SECRET_KEY;
+  });
+  test("Token verification given valid token returns valid message", async () => {
+    await supertest(app).get("/auth/verify-token")
+      .query({ token: mockedTokenUser.token })
+      .expect(200)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Valid token");
+      });
+  });
+  test("Token verification given invalid token return invalid message", async () => {
+    await supertest(app).get("/auth/verify-token")
+      .query({ token: "token1234" })
+      .expect(200)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Invalid token");
       });
   });
 });

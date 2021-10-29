@@ -6,6 +6,10 @@ module.exports = {
   },
 
   async verifyToken(accessToken) {
-    return jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    try {
+      return jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+    } catch (e) {
+      return false;
+    }
   },
 };

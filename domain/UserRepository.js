@@ -18,4 +18,8 @@ module.exports = class {
   static getAll() {
     throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
   }
+
+  static getBy() {
+    throw new Error("ERR_METHOD_NOT_IMPLEMENTED");
+  }
 };

@@ -25,9 +25,9 @@ module.exports = class extends UserRepository {
     );
   }
 
-  static async getByEmail(email) {
+  static async getBy(param) {
     try {
-      const mongooseUser = await MongooseUser.findOne({ email });
+      const mongooseUser = await MongooseUser.findOne({ param });
       if (mongooseUser) {
         return new User(
           mongooseUser.id,
