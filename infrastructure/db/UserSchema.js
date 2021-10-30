@@ -14,11 +14,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: false,
   },
-  // hash: String,
   salt: String,
 });
-
-// userSchema.methods.setPassword = hash.setPassword;
-// userSchema.methods.validPassword = hash.validPassword;
 
 module.exports = mongoose.model("User", userSchema);
