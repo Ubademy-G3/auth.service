@@ -1,10 +1,14 @@
-const { UnexpectedError } = require("../../errors/UnexpectedError");
+const { NotFoundError } = require("../../errors/NotFoundError");
+const { BadRequestError } = require("../../errors/BadRequestError");
 
 module.exports = async (userRepository, user) => {
-  try {
-    const { id } = user;
-    return userRepository.get(id);
-  } catch (err) {
-    throw new UnexpectedError(`Unexpected error happened when searching for user by id ${err}`);
+  if (!user.id) {
+    throw new BadRequestError("Missing required field");
   }
+  const { id } = user;
+  const u = await userRepository.get(id);
+  if (!u) {
+    throw new NotFoundError("User Id not found");
+  }
+  return u;
 };

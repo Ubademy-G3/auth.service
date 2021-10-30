@@ -16,13 +16,16 @@ module.exports = class extends UserRepository {
 
   static async get(userId) {
     const mongooseUser = await MongooseUser.findById(userId);
-    return new User(
-      mongooseUser.id,
-      mongooseUser.email,
-      mongooseUser.password,
-      mongooseUser.token,
-      mongooseUser.salt,
-    );
+    if (mongooseUser) {
+      return new User(
+        mongooseUser.id,
+        mongooseUser.email,
+        mongooseUser.password,
+        mongooseUser.token,
+        mongooseUser.salt,
+      );
+    }
+    return null;
   }
 
   static async getBy(param) {
@@ -57,14 +60,17 @@ module.exports = class extends UserRepository {
     const mongooseUser = await MongooseUser.findByIdAndUpdate(id, {
       email, password, token, salt,
     }, { new: true });
-    return new User(mongooseUser.id,
-      mongooseUser.email,
-      mongooseUser.password,
-      mongooseUser.token,
-      mongooseUser.salt);
+    if (mongooseUser) {
+      return new User(mongooseUser.id,
+        mongooseUser.email,
+        mongooseUser.password,
+        mongooseUser.token,
+        mongooseUser.salt);
+    }
+    return null;
   }
 
   static async delete(userId) {
-    return MongooseUser.findByIdAndDelete(userId);
+    return MongooseUser.findByIdAndRemove(userId);
   }
 };
