@@ -10,7 +10,7 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
   }
   // get user by email
 
-  const maybeUser = await userRepository.getBy(userInfo.email);
+  const maybeUser = await userRepository.getBy({email: userInfo.email});
   if (!maybeUser) {
     throw new NotFoundError("User not found");
   }

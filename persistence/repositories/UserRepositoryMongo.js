@@ -29,7 +29,9 @@ module.exports = class extends UserRepository {
   }
 
   static async getBy(param) {
-    const mongooseUser = await MongooseUser.findOne({ param });
+    const mongooseUser = await MongooseUser.findOne(param);
+    console.log(param)
+    console.log(mongooseUser)
     if (mongooseUser) {
       return new User(
         mongooseUser.id,

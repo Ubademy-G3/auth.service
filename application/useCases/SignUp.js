@@ -7,7 +7,8 @@ module.exports = async (userRepository, userInfo, hasher) => {
     throw new BadRequestError("Missing required fields");
   }
 
-  const userAlreadyExists = await userRepository.getBy(userInfo.email);
+  const userAlreadyExists = await userRepository.getBy({email: userInfo.email});
+  console.log(userAlreadyExists)
   if (userAlreadyExists) {
     throw new UserAlreadyExistsError("User already exists with given email");
   }
