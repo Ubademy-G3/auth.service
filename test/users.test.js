@@ -46,9 +46,14 @@ afterEach(() => {
 describe("POST /users", () => {
   beforeEach(() => {
     mockingoose(model).reset();
+    process.env.AUTH_APIKEY = "test";
+  });
+  afterEach(() => {
+    delete process.env.AUTH_APIKEY;
   });
   test("Creates user successfully with valid email and password", async () => {
     await supertest(app).post("/users/")
+      .set("Authorization", "test")
       .send(mockedUser)
       .expect(200)
       .then((response) => {
@@ -62,6 +67,7 @@ describe("POST /users", () => {
   });
   test("Fails when password is missing", async () => {
     await supertest(app).post("/users/")
+      .set("Authorization", "test")
       .send({ email: mockedUser.email })
       .expect(400)
       .then((response) => {
@@ -71,6 +77,7 @@ describe("POST /users", () => {
   });
   test("Fails when email is missing", async () => {
     await supertest(app).post("/users/")
+      .set("Authorization", "test")
       .send({ password: mockedUser.password })
       .expect(400)
       .then((response) => {
@@ -82,6 +89,7 @@ describe("POST /users", () => {
     const existingUser = mockedUser;
     mockingoose(model).toReturn(existingUser, "findOne");
     await supertest(app).post("/users/")
+      .set("Authorization", "test")
       .send(mockedUser)
       .expect(409)
       .then((response) => {
@@ -89,16 +97,31 @@ describe("POST /users", () => {
         expect(res.message).toBe("User already exists with given email");
       });
   });
-  // unauthorized if invalid apikey
+  test("Returns unauthorized when invalid apikey", async () => {
+    const existingUser = mockedUser;
+    mockingoose(model).toReturn(existingUser, "findOne");
+    await supertest(app).post("/users/")
+      .set("Authorization", "invalid")
+      .expect(401)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Unauthorized");
+      });
+  });
 });
 
 describe("GET /users", () => {
   beforeEach(() => {
     mockingoose(model).reset();
+    process.env.AUTH_APIKEY = "test";
+  });
+  afterEach(() => {
+    delete process.env.AUTH_APIKEY;
   });
   test("Returns all users successfully", async () => {
     mockingoose(model).toReturn(mockedUsers, "find");
     await supertest(app).get("/users/")
+      .set("Authorization", "test")
       .expect(200)
       .then((response) => {
         const res = JSON.parse(response.text);
@@ -114,16 +137,30 @@ describe("GET /users", () => {
         expect(res[1].id).toBeUndefined();
       });
   });
-  // unauthorized invalid apikey
+  test("Returns unauthorized when invalid apikey", async () => {
+    mockingoose(model).toReturn(mockedUsers, "find");
+    await supertest(app).get("/users/")
+      .set("Authorization", "invalid")
+      .expect(401)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Unauthorized");
+      });
+  });
 });
 
 describe("GET /users/:id", () => {
   beforeEach(() => {
     mockingoose(model).reset();
+    process.env.AUTH_APIKEY = "test";
+  });
+  afterEach(() => {
+    delete process.env.AUTH_APIKEY;
   });
   test("Returns user when valid id", async () => {
     mockingoose(model).toReturn(mockedUser, "findOne");
     await supertest(app).get(`/users/${mockedUser.id}`)
+      .set("Authorization", "test")
       .expect(200)
       .then((response) => {
         const res = JSON.parse(response.text);
@@ -132,22 +169,36 @@ describe("GET /users/:id", () => {
   });
   test("Returns user not found when invalid id", async () => {
     await supertest(app).get("/users/53423")
+      .set("Authorization", "test")
       .expect(404)
       .then((response) => {
         const res = JSON.parse(response.text);
         expect(res.message).toBe("User Id not found");
       });
   });
-  // unauthorized
+  test("Returns unauthorized when invalid apikey", async () => {
+    await supertest(app).get("/users/53423")
+      .set("Authorization", "invalid")
+      .expect(401)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Unauthorized");
+      });
+  });
 });
 
 describe("PUT /users/:id", () => {
   beforeEach(() => {
     mockingoose(model).reset();
+    process.env.AUTH_APIKEY = "test";
+  });
+  afterEach(() => {
+    delete process.env.AUTH_APIKEY;
   });
   test("Returns updated user when valid id", async () => {
     mockingoose(model).toReturn(mockedUserUpdated, "findOneAndUpdate");
     await supertest(app).put(`/users/${mockedUser.id}`)
+      .set("Authorization", "test")
       .send({ password: "newpassword" })
       .expect(200)
       .then((response) => {
@@ -157,22 +208,36 @@ describe("PUT /users/:id", () => {
   });
   test("Returns user not found when invalid id", async () => {
     await supertest(app).put("/users/53423")
+      .set("Authorization", "test")
       .expect(404)
       .then((response) => {
         const res = JSON.parse(response.text);
         expect(res.message).toBe("User Id not found");
       });
   });
-  // unauthorized
+  test("Returns unauthorized when invalid apikey", async () => {
+    await supertest(app).put("/users/53423")
+      .set("Authorization", "invalid")
+      .expect(401)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Unauthorized");
+      });
+  });
 });
 
 describe("DELETE /users/:id", () => {
   beforeEach(() => {
     mockingoose(model).reset();
+    process.env.AUTH_APIKEY = "test";
+  });
+  afterEach(() => {
+    delete process.env.AUTH_APIKEY;
   });
   test("Returns deleted user message when valid id", async () => {
     mockingoose(model).toReturn(mockedUserUpdated, "findOneAndRemove");
     await supertest(app).delete(`/users/${mockedUser.id}`)
+      .set("Authorization", "test")
       .expect(200)
       .then((response) => {
         const res = JSON.parse(response.text);
@@ -181,11 +246,20 @@ describe("DELETE /users/:id", () => {
   });
   test("Returns user not found when invalid id", async () => {
     await supertest(app).delete("/users/53423")
+      .set("Authorization", "test")
       .expect(404)
       .then((response) => {
         const res = JSON.parse(response.text);
         expect(res.message).toBe("User Id not found");
       });
   });
-  // unauthorized
+  test("Returns unauthorized when invalid apikey", async () => {
+    await supertest(app).delete("/users/53423")
+      .set("Authorization", "invalid")
+      .expect(401)
+      .then((response) => {
+        const res = JSON.parse(response.text);
+        expect(res.message).toBe("Unauthorized");
+      });
+  });
 });

@@ -37,6 +37,12 @@
                 "tags": ["Users"],
                 "summary": "Get all registered users",
                 "description": "Returns a list containing all users",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list of users",
@@ -91,6 +97,10 @@
                                 }
                             }
                         }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -131,6 +141,10 @@
                         "in": "path",
                         "description": "ID of the user to fetch",
                         "required": true
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -190,6 +204,10 @@
                                 }
                             }
                         }
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -227,6 +245,10 @@
                         "in": "path",
                         "description": "ID of the user to delete",
                         "required": true
+                    },
+                    {
+                        "name": "authorization",
+                        "in": "header"
                     }
                 ],
                 "responses": {
