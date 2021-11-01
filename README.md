@@ -1,9 +1,9 @@
 # Auth Microservice
 
-Service for authentication.
-
 [![CI](https://github.com/Ubademy-G3/auth.service/actions/workflows/test.yml/badge.svg)](https://github.com/Ubademy-G3/auth.service/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/Ubademy-G3/auth.service/branch/main/graph/badge.svg?token=OD8Z2SGLLB)](https://codecov.io/gh/Ubademy-G3/auth.service)
+
+Service for authentication.
 
 This service provides:
 
