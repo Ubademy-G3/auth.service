@@ -1,4 +1,3 @@
-const ListUsers = require("../useCases/ListUsers");
 const RegisterUser = require("../useCases/SignUp");
 const LogUser = require("../useCases/Login");
 const AuthenticateUser = require("../useCases/AuthenticateUser");
@@ -7,17 +6,6 @@ const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError"
 const { BadRequestError } = require("../../errors/BadRequestError");
 const { NotFoundError } = require("../../errors/NotFoundError");
 const { NotAuthorizedError } = require("../../errors/NotAuthorizedError");
-
-exports.getAll = async (req, res) => {
-  const repository = req.app.serviceLocator.userRepository;
-  const users = await ListUsers(repository);
-  return res.json(users); // usar serialize
-};
-
-// exports.get = async (req, res) => {
-// //   const user = await RetrieveUser(repo);
-//   return res.json(user);
-// };
 
 exports.signup = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;

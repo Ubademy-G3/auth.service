@@ -9,7 +9,8 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
     throw new BadRequestError("Missing required fields");
   }
   // get user by email
-  const maybeUser = await userRepository.getBy(userInfo.email);
+
+  const maybeUser = await userRepository.getBy({email: userInfo.email});
   if (!maybeUser) {
     throw new NotFoundError("User not found");
   }
@@ -24,11 +25,12 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
         const userUpdated = await userRepository.update(maybeUser);
         return userUpdated;
       } catch (err) {
-        throw new UnexpectedError(`Unexpected error happen when generating token: ${err}`);
+        throw new UnexpectedError(`Unexpected error happened when generating token: ${err}`);
       }
     } else {
       throw new NotAuthorizedError("Unauthorized");
     }
   }
+
   throw new UnexpectedError("Something unexpected happened");
 };

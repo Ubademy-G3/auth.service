@@ -4,43 +4,44 @@ const UserRepository = require("../../domain/UserRepository");
 
 module.exports = class extends UserRepository {
   static async create(newUser) {
-    const { email, password, salt } = newUser;
-    const mongooseUser = new MongooseUser({ email, password, salt });
-    try {
-      const user = await mongooseUser.save();
-      return new User(user.id, user.email, user.password, user.token, user.salt);
-    } catch (e) {
-      return e;
-    }
+    const {
+      email, password, token, salt,
+    } = newUser;
+    const mongooseUser = new MongooseUser({
+      email, password, token, salt,
+    });
+    const user = await mongooseUser.save();
+    return new User(user.id, user.email, user.password, user.token, user.salt);
   }
 
   static async get(userId) {
     const mongooseUser = await MongooseUser.findById(userId);
-    return new User(
-      mongooseUser.id,
-      mongooseUser.email,
-      mongooseUser.password,
-      mongooseUser.token,
-      mongooseUser.salt,
-    );
+    if (mongooseUser) {
+      return new User(
+        mongooseUser.id,
+        mongooseUser.email,
+        mongooseUser.password,
+        mongooseUser.token,
+        mongooseUser.salt,
+      );
+    }
+    return null;
   }
 
   static async getBy(param) {
-    try {
-      const mongooseUser = await MongooseUser.findOne({ param });
-      if (mongooseUser) {
-        return new User(
-          mongooseUser.id,
-          mongooseUser.email,
-          mongooseUser.password,
-          mongooseUser.token,
-          mongooseUser.salt,
-        );
-      }
-      return null;
-    } catch (err) {
-      return err;
+    const mongooseUser = await MongooseUser.findOne(param);
+    console.log(param)
+    console.log(mongooseUser)
+    if (mongooseUser) {
+      return new User(
+        mongooseUser.id,
+        mongooseUser.email,
+        mongooseUser.password,
+        mongooseUser.token,
+        mongooseUser.salt,
+      );
     }
+    return null;
   }
 
   static async getAll() {
@@ -61,14 +62,17 @@ module.exports = class extends UserRepository {
     const mongooseUser = await MongooseUser.findByIdAndUpdate(id, {
       email, password, token, salt,
     }, { new: true });
-    return new User(mongooseUser.id,
-      mongooseUser.email,
-      mongooseUser.password,
-      mongooseUser.token,
-      mongooseUser.salt);
+    if (mongooseUser) {
+      return new User(mongooseUser.id,
+        mongooseUser.email,
+        mongooseUser.password,
+        mongooseUser.token,
+        mongooseUser.salt);
+    }
+    return null;
   }
 
   static async delete(userId) {
-    return MongooseUser.findOneAndDelete(userId);
+    return MongooseUser.findByIdAndRemove(userId);
   }
 };
