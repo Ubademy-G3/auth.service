@@ -1,4 +1,4 @@
-class NotFoundError extends Error {
+class NotFoundException extends Error {
   constructor(message) {
     super(message);
     this.name = this.constructor.name;
@@ -7,5 +7,5 @@ class NotFoundError extends Error {
 }
 
 module.exports = {
-  NotFoundError,
+  NotFoundException,
 };

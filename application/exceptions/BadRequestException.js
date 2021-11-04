@@ -1,4 +1,4 @@
-class NotAuthorizedError extends Error {
+class BadRequestException extends Error {
   constructor(message) {
     super(message);
     this.name = this.constructor.name;
@@ -7,5 +7,5 @@ class NotAuthorizedError extends Error {
 }
 
 module.exports = {
-  NotAuthorizedError,
+  BadRequestException,
 };

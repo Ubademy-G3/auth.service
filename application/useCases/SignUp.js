@@ -1,16 +1,15 @@
-const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
-const { BadRequestError } = require("../../errors/BadRequestError");
-const { UnexpectedError } = require("../../errors/UnexpectedError");
+const { UserAlreadyExistsException } = require("../../domain/exceptions/UserAlreadyExistsException");
+const { BadRequestException } = require("../exceptions/BadRequestException");
+const { UnexpectedException } = require("../exceptions/UnexpectedException");
 
 module.exports = async (userRepository, userInfo, hasher) => {
   if (!userInfo.email || !userInfo.password) {
-    throw new BadRequestError("Missing required fields");
+    throw new BadRequestException("Missing required fields");
   }
 
   const userAlreadyExists = await userRepository.getBy({email: userInfo.email});
-  console.log(userAlreadyExists)
   if (userAlreadyExists) {
-    throw new UserAlreadyExistsError("User already exists with given email");
+    throw new UserAlreadyExistsException("User already exists with given email");
   }
 
   const cred = hasher.setPassword(userInfo.password);
@@ -21,6 +20,6 @@ module.exports = async (userRepository, userInfo, hasher) => {
     const user = await userRepository.create(userI);
     return user;
   } catch (err) {
-    throw new UnexpectedError(`Unexpected error happened when creating new user ${err}`);
+    throw new UnexpectedException(`Unexpected error happened when creating new user ${err}`);
   }
 };

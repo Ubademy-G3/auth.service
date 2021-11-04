@@ -4,14 +4,14 @@ const RetrieveUser = require("../useCases/RetrieveUser");
 const CreateUser = require("../useCases/CreateUser");
 const UpdateUser = require("../useCases/UpdateUser");
 const DeleteUser = require("../useCases/DeleteUser");
-const { BadRequestError } = require("../../errors/BadRequestError");
-const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
-const { NotFoundError } = require("../../errors/NotFoundError");
+const { BadRequestException } = require("../exceptions/BadRequestException");
+const { UserAlreadyExistsException } = require("../../domain/exceptions/UserAlreadyExistsException");
+const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
 
 exports.getAll = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const apikey = req.get("authorization");
-  if (apikey !== process.env.AUTH_APIKEY) {
+  if (!apikey || apikey !== process.env.AUTH_APIKEY) {
     res.status(401).send({ message: "Unauthorized" });
   } else {
     ListUsers(repository)
@@ -23,13 +23,13 @@ exports.getAll = async (req, res) => {
 exports.get = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const apikey = req.get("authorization");
-  if (apikey !== process.env.AUTH_APIKEY) {
+  if (!apikey || apikey !== process.env.AUTH_APIKEY) {
     res.status(401).send({ message: "Unauthorized" });
   } else {
     RetrieveUser(repository, req.params)
       .then((user) => res.status(200).json(serialize(user)))
       .catch((err) => {
-        if (err instanceof NotFoundError) {
+        if (err instanceof NotFoundException) {
           return res.status(404).send({ message: err.message });
         }
         return res.status(500).send({ message: err.message });
@@ -40,16 +40,16 @@ exports.get = async (req, res) => {
 exports.create = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const apikey = req.get("authorization");
-  if (apikey !== process.env.AUTH_APIKEY) {
+  if (!apikey || apikey !== process.env.AUTH_APIKEY) {
     res.status(401).send({ message: "Unauthorized" });
   } else {
     CreateUser(repository, req.body)
       .then((user) => res.status(200).json(serialize(user)))
       .catch((err) => {
-        if (err instanceof UserAlreadyExistsError) {
+        if (err instanceof UserAlreadyExistsException) {
           return res.status(409).send({ message: err.message });
         }
-        if (err instanceof BadRequestError) {
+        if (err instanceof BadRequestException) {
           return res.status(400).send({ message: err.message });
         }
         return res.status(500).send({ message: err.message });
@@ -60,16 +60,16 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const apikey = req.get("authorization");
-  if (apikey !== process.env.AUTH_APIKEY) {
+  if (!apikey || apikey !== process.env.AUTH_APIKEY) {
     res.status(401).send({ message: "Unauthorized" });
   } else {
     UpdateUser(repository, req.params, req.body)
       .then((user) => res.status(200).json(serialize(user)))
       .catch((err) => {
-        if (err instanceof NotFoundError) {
+        if (err instanceof NotFoundException) {
           return res.status(404).send({ message: err.message });
         }
-        if (err instanceof BadRequestError) {
+        if (err instanceof BadRequestException) {
           return res.status(400).send({ message: err.message });
         }
         return res.status(500).send({ message: err.message });
@@ -80,16 +80,16 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const apikey = req.get("authorization");
-  if (apikey !== process.env.AUTH_APIKEY) {
+  if (!apikey || apikey !== process.env.AUTH_APIKEY) {
     res.status(401).send({ message: "Unauthorized" });
   } else {
     DeleteUser(repository, req.params)
       .then((msg) => res.status(200).json(msg))
       .catch((err) => {
-        if (err instanceof NotFoundError) {
+        if (err instanceof NotFoundException) {
           return res.status(404).send({ message: err.message });
         }
-        if (err instanceof BadRequestError) {
+        if (err instanceof BadRequestException) {
           return res.status(400).send({ message: err.message });
         }
         return res.status(500).send({ message: err.message });

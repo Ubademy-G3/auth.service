@@ -2,10 +2,10 @@ const RegisterUser = require("../useCases/SignUp");
 const LogUser = require("../useCases/Login");
 const AuthenticateUser = require("../useCases/AuthenticateUser");
 const serialize = require("../serializers/UserSerializer");
-const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
-const { BadRequestError } = require("../../errors/BadRequestError");
-const { NotFoundError } = require("../../errors/NotFoundError");
-const { NotAuthorizedError } = require("../../errors/NotAuthorizedError");
+const { UserAlreadyExistsException } = require("../../domain/exceptions/UserAlreadyExistsException");
+const { BadRequestException } = require("../exceptions/BadRequestException");
+const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
+const { NotAuthorizedException } = require("../../domain/exceptions/NotAuthorizedException");
 
 exports.signup = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
@@ -13,12 +13,12 @@ exports.signup = async (req, res) => {
   RegisterUser(repository, req.body, hasher)
     .then((user) => res.status(200).json(serialize(user)))
     .catch((err) => {
-      if (err instanceof UserAlreadyExistsError) {
+      if (err instanceof UserAlreadyExistsException) {
         return res.status(409).send({
           message: err.message,
         });
       }
-      if (err instanceof BadRequestError) {
+      if (err instanceof BadRequestException) {
         return res.status(400).send({
           message: err.message,
         });
@@ -36,17 +36,17 @@ exports.login = async (req, res) => {
   LogUser(repository, req.body, jwt, hasher)
     .then((user) => res.status(200).json(serialize(user)))
     .catch((err) => {
-      if (err instanceof NotFoundError) {
+      if (err instanceof NotFoundException) {
         return res.status(404).send({
           message: err.message,
         });
       }
-      if (err instanceof NotAuthorizedError) {
+      if (err instanceof NotAuthorizedException) {
         return res.status(403).send({
           message: err.message,
         });
       }
-      if (err instanceof BadRequestError) {
+      if (err instanceof BadRequestException) {
         return res.status(400).send({
           message: err.message,
         });

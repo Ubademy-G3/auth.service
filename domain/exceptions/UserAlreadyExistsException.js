@@ -1,4 +1,4 @@
-class BadRequestError extends Error {
+class UserAlreadyExistsException extends Error {
   constructor(message) {
     super(message);
     this.name = this.constructor.name;
@@ -7,5 +7,5 @@ class BadRequestError extends Error {
 }
 
 module.exports = {
-  BadRequestError,
+  UserAlreadyExistsException,
 };

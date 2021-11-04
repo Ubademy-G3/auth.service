@@ -15,10 +15,6 @@
         {
             "name": "Auth",
             "description": ""
-        },
-        {
-            "name": "Users",
-            "description": ""
         }
     ],
     "schemes": [
@@ -32,9 +28,8 @@
         "application/json"
     ],
     "paths": {
-        "/users": {
+        "/authorization": {
             "get": {
-                "tags": ["Users"],
                 "summary": "Get all registered users",
                 "description": "Returns a list containing all users",
                 "parameters": [
@@ -81,7 +76,6 @@
                 }
             },
             "post": {
-                "tags": ["Users"],
                 "summary": "Creates new user",
                 "description": "Returns created user",
                 "parameters": [
@@ -163,9 +157,8 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/authorization/{id}": {
             "get": {
-                "tags": ["Users"],
                 "summary": "Get user by id",
                 "description": "Returns a user based on a single ID",
                 "parameters": [
@@ -222,7 +215,6 @@
                 }
             },
             "put": {
-                "tags": ["Users"],
                 "summary": "Update user by id",
                 "description": "Returns updated user",
                 "parameters": [
@@ -307,7 +299,6 @@
                 }
             },
             "delete": {
-                "tags": ["Users"],
                 "summary": "Delete user by id",
                 "description": "Returns a user based on a single ID",
                 "parameters": [
@@ -361,9 +352,8 @@
                 }
             }
         },
-        "/auth/signup": {
+        "/registration": {
             "post": {
-                "tags": ["Auth"],
                 "summary": "Register a new user",
                 "description": "Returns created user",
                 "parameters": [
@@ -429,9 +419,8 @@
                 }
             }
         },
-        "/auth/login": {
+        "/authentication": {
             "post": {
-                "tags": ["Auth"],
                 "summary": "Log a user",
                 "description": "Returns logged user",
                 "parameters": [
@@ -501,11 +490,8 @@
                         }
                     }
                 }
-            }
-        },
-        "/auth/verify-token": {
+            },
             "get": {
-                "tags": ["Auth"],
                 "summary": "Verify user token",
                 "description": "Returns verified token",
                 "produces": [

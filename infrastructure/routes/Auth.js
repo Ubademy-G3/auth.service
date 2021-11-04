@@ -1,13 +1,19 @@
 const express = require("express");
 const AuthController = require("../../application/controllers/AuthController");
+const UsersController = require("../../application/controllers/UsersController");
 
 const router = express.Router();
 
-// Register & Login
-router.route("/signup").post(AuthController.signup);
-router.route("/login").post(AuthController.login);
+// Authorization & Authentication
+router.route("/registration").post(AuthController.signup);
+router.route("/authentication").post(AuthController.login);
+router.route("/authentication").get(AuthController.authenticate);
 
-// Authentication
-router.route("/verify-token").get(AuthController.authenticate);
+// Basic CRUD
+router.route("/authorization").get(UsersController.getAll);
+router.route("/authorization/:id").get(UsersController.get);
+router.route("/authorization/").post(UsersController.create);
+router.route("/authorization/:id").put(UsersController.update);
+router.route("/authorization/:id").delete(UsersController.delete);
 
 module.exports = router;
