@@ -30,6 +30,7 @@
     "paths": {
         "/authorization": {
             "get": {
+                "tags": ["Auth"],
                 "summary": "Get all registered users",
                 "description": "Returns a list containing all users",
                 "parameters": [
@@ -76,6 +77,7 @@
                 }
             },
             "post": {
+                "tags": ["Auth"],
                 "summary": "Creates new user",
                 "description": "Returns created user",
                 "parameters": [
@@ -159,6 +161,7 @@
         },
         "/authorization/{id}": {
             "get": {
+                "tags": ["Auth"],
                 "summary": "Get user by id",
                 "description": "Returns a user based on a single ID",
                 "parameters": [
@@ -215,6 +218,7 @@
                 }
             },
             "put": {
+                "tags": ["Auth"],
                 "summary": "Update user by id",
                 "description": "Returns updated user",
                 "parameters": [
@@ -299,6 +303,7 @@
                 }
             },
             "delete": {
+                "tags": ["Auth"],
                 "summary": "Delete user by id",
                 "description": "Returns a user based on a single ID",
                 "parameters": [
@@ -354,6 +359,7 @@
         },
         "/registration": {
             "post": {
+                "tags": ["Auth"],
                 "summary": "Register a new user",
                 "description": "Returns created user",
                 "parameters": [
@@ -421,6 +427,7 @@
         },
         "/authentication": {
             "post": {
+                "tags": ["Auth"],
                 "summary": "Log a user",
                 "description": "Returns logged user",
                 "parameters": [
@@ -492,6 +499,7 @@
                 }
             },
             "get": {
+                "tags": ["Auth"],
                 "summary": "Verify user token",
                 "description": "Returns verified token",
                 "produces": [
@@ -516,6 +524,76 @@
                                     "type": "string"
                                 }
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/password-reset": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "password"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Not authorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {
