@@ -28,7 +28,7 @@
         "application/json"
     ],
     "paths": {
-        "/authorization": {
+        "/authorization/users": {
             "get": {
                 "tags": ["Auth"],
                 "summary": "Get all registered users",
@@ -159,7 +159,7 @@
                 }
             }
         },
-        "/authorization/{id}": {
+        "/authorization/users/{id}": {
             "get": {
                 "tags": ["Auth"],
                 "summary": "Get user by id",
@@ -357,74 +357,6 @@
                 }
             }
         },
-        "/registration": {
-            "post": {
-                "tags": ["Auth"],
-                "summary": "Register a new user",
-                "description": "Returns created user",
-                "parameters": [
-                    {
-                        "name": "user",
-                        "in": "body",
-                        "description": "The user to register",
-                        "schema": {
-                            "required": [
-                                "email",
-                                "password"
-                            ],
-                            "properties": {
-                                "email": {
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "New user info",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string"
-                                },
-                                "email": {
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "type": "password"
-                                },
-                                "token": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/authentication": {
             "post": {
                 "tags": ["Auth"],
@@ -485,7 +417,7 @@
                         }
                     },
                     "404": {
-                        "description": "Bad request",
+                        "description": "Not found",
                         "schema": {
                             "type": "string"
                         }
@@ -535,10 +467,72 @@
                 }
             }
         },
-        "/password-reset": {
+        "/authorization" : {
             "post": {
                 "tags": ["Auth"],
-                "summary": "",
+                "summary": "Registers new user",
+                "description": "Returns registered user",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to create",
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registered user",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/authorization/password": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Sends reset password email",
                 "description": "",
                 "parameters": [
                     {
@@ -559,13 +553,77 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "Email sent successfully",
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "id": {
+                                "message": {
                                     "type": "string"
-                                },
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/authorization/password/{id}/{token}": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Updates user password",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "password"
+                            ],
+                            "properties": {
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
                                 "email": {
                                     "type": "string"
                                 },
@@ -591,7 +649,7 @@
                         }
                     },
                     "404": {
-                        "description": "Bad request",
+                        "description": "Not found",
                         "schema": {
                             "type": "string"
                         }

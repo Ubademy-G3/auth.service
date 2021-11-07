@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
+const { CouldNotSendEmailException } = require("../exceptions/CouldNotSendEmailException");
 
-const sendEmail = async (email, subject, text) => {
+const sendEmail = async (email, subject, link) => {
     try {
         const transporter = nodemailer.createTransport({
             service: process.env.SERVICE,
@@ -18,7 +19,7 @@ const sendEmail = async (email, subject, text) => {
 
             Follow this link to reset your Ubademy password for your  ${email} account.
             
-            ${text}
+            ${link}
             
             If you didn’t ask to reset your password, you can ignore this email.
             
@@ -26,10 +27,8 @@ const sendEmail = async (email, subject, text) => {
             
             Your Ubademy team`,
         });
-
-        console.log("email sent sucessfully");
     } catch (error) {
-        console.log(error, "email not sent");
+        throw new CouldNotSendEmailException(`Email not sent ${error}`);
     }
 };
 
