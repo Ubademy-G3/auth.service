@@ -529,7 +529,7 @@
                 }
             }
         },
-        "/authorization/password": {
+        "/authentication/password": {
             "post": {
                 "tags": ["Auth"],
                 "summary": "Sends reset password email",
@@ -584,7 +584,7 @@
                 }
             }
         },
-        "/authorization/password/{id}/{token}": {
+        "/authentication/password/{id}/{token}": {
             "post": {
                 "tags": ["Auth"],
                 "summary": "Updates user password",

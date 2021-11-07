@@ -30,6 +30,7 @@
     "jest": "^27.2.4",
     "mockingoose": "^2.15.2",
     "mongodb-mock-server": "^2.0.1",
+    "nodemailer-mock": "^1.5.11",
     "nodemon": "^2.0.14",
     "supertest": "^6.1.6"
   },

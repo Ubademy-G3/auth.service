@@ -71,7 +71,7 @@ exports.authenticate = async (req, res) => {
 exports.sendPasswordResetEmail = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const jwt = req.app.serviceLocator.tokenManager;
-  const mailer = req.app.serviceLocator.mailer;
+  const { mailer } = req.app.serviceLocator;
   SendEmail(req.body, repository, jwt, mailer)
     .then((msg) => res.status(200).json(msg))
     .catch((err) => {

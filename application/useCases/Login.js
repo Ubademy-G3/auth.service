@@ -10,7 +10,7 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
   }
   // get user by email
 
-  const maybeUser = await userRepository.getBy({email: userInfo.email});
+  const maybeUser = await userRepository.getBy({ email: userInfo.email });
   if (!maybeUser) {
     throw new NotFoundException("User not found");
   }
@@ -32,5 +32,5 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
     }
   }
 
-  throw new UnexpectedError("Something unexpected happened");
+  throw new UnexpectedException("Something unexpected happened");
 };

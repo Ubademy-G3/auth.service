@@ -17,7 +17,7 @@ router.route("/authorization/users/:id").put(UsersController.update);
 router.route("/authorization/users/:id").delete(UsersController.delete);
 
 // Password reset
-router.route("/authorization/password").post(AuthController.sendPasswordResetEmail);
-router.route("/authorization/password/:userId/:token").post(AuthController.passwordReset);
+router.route("/authentication/password").post(AuthController.sendPasswordResetEmail);
+router.route("/authentication/password/:userId/:token").post(AuthController.passwordReset);
 
 module.exports = router;

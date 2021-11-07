@@ -13,7 +13,7 @@ module.exports = async (userRepository, userInfo) => {
     throw new BadRequestException("Password must be at least 6 characters");
   }
 
-  const userAlreadyExists = await userRepository.getBy({email: userInfo.email});
+  const userAlreadyExists = await userRepository.getBy({ email: userInfo.email });
   if (userAlreadyExists) {
     throw new UserAlreadyExistsException("User already exists with given email");
   }

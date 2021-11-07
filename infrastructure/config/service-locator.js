@@ -8,7 +8,7 @@ function buildServices() {
     tokenManager: jwtManager,
     hashManager: hasher,
     userRepository: UserRepositoryMongo,
-    mailer: mailer
+    mailer,
   };
 }
 

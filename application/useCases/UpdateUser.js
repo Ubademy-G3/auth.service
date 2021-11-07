@@ -8,6 +8,7 @@ module.exports = async (userRepository, params, userInfo) => {
 
   const user = userInfo;
   user.id = params.id;
+
   const updated = await userRepository.update(user);
   if (!updated) {
     throw new NotFoundException("User Id not found");
