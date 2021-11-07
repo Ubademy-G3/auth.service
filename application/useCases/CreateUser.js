@@ -1,19 +1,25 @@
-const { BadRequestError } = require("../../errors/BadRequestError");
-const { UnexpectedError } = require("../../errors/UnexpectedError");
-const { UserAlreadyExistsError } = require("../../errors/UserAlreadyExistsError");
+const { BadRequestException } = require("../exceptions/BadRequestException");
+const { UnexpectedException } = require("../exceptions/UnexpectedException");
+const { UserAlreadyExistsException } = require("../../domain/exceptions/UserAlreadyExistsException");
+
+const PASSWORD_MIN_LEN = 6;
 
 module.exports = async (userRepository, userInfo) => {
   if (!userInfo.email || !userInfo.password) {
-    throw new BadRequestError("Missing required fields");
+    throw new BadRequestException("Missing required fields");
   }
 
-  const userAlreadyExists = await userRepository.getBy({email: userInfo.email});
+  if (userInfo.password.length < PASSWORD_MIN_LEN) {
+    throw new BadRequestException("Password must be at least 6 characters");
+  }
+
+  const userAlreadyExists = await userRepository.getBy({ email: userInfo.email });
   if (userAlreadyExists) {
-    throw new UserAlreadyExistsError("User already exists with given email");
+    throw new UserAlreadyExistsException("User already exists with given email");
   }
   try {
     return userRepository.create(userInfo);
   } catch (err) {
-    throw new UnexpectedError(`Unexpected error happened when creating user ${err}`);
+    throw new UnexpectedException(`Unexpected error happened when creating user ${err}`);
   }
 };

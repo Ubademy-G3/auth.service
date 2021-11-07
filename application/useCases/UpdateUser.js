@@ -1,16 +1,17 @@
-const { BadRequestError } = require("../../errors/BadRequestError");
-const { NotFoundError } = require("../../errors/NotFoundError");
+const { BadRequestException } = require("../exceptions/BadRequestException");
+const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
 
 module.exports = async (userRepository, params, userInfo) => {
   if (!params.id) {
-    throw new BadRequestError("Missing required field");
+    throw new BadRequestException("Missing required field");
   }
 
   const user = userInfo;
   user.id = params.id;
+
   const updated = await userRepository.update(user);
   if (!updated) {
-    throw new NotFoundError("User Id not found");
+    throw new NotFoundException("User Id not found");
   }
   return updated;
 };

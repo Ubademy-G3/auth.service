@@ -1,4 +1,4 @@
-class UserAlreadyExistsError extends Error {
+class UnexpectedException extends Error {
   constructor(message) {
     super(message);
     this.name = this.constructor.name;
@@ -7,5 +7,5 @@ class UserAlreadyExistsError extends Error {
 }
 
 module.exports = {
-  UserAlreadyExistsError,
+  UnexpectedException,
 };

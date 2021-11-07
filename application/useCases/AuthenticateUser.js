@@ -1,10 +1,10 @@
-const { BadRequestError } = require("../../errors/BadRequestError");
+const { BadRequestException } = require("../exceptions/BadRequestException");
 
 module.exports = async (params, jwt) => {
   const givenToken = params.token;
   // validate input
   if (!givenToken) {
-    throw new BadRequestError("Missing required field token");
+    throw new BadRequestException("Missing required field token");
   }
 
   // verify token

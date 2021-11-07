@@ -1,4 +1,5 @@
 const serializeUser = (user) => ({
+  id: user.id,
   email: user.email,
   token: user.token,
 });

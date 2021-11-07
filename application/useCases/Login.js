@@ -1,18 +1,18 @@
-const { NotFoundError } = require("../../errors/NotFoundError");
-const { UnexpectedError } = require("../../errors/UnexpectedError");
-const { NotAuthorizedError } = require("../../errors/NotAuthorizedError");
-const { BadRequestError } = require("../../errors/BadRequestError");
+const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
+const { UnexpectedException } = require("../exceptions/UnexpectedException");
+const { NotAuthorizedException } = require("../../domain/exceptions/NotAuthorizedException");
+const { BadRequestException } = require("../exceptions/BadRequestException");
 
 module.exports = async (userRepository, userInfo, jwt, hasher) => {
   // validate input
   if (!userInfo.email || !userInfo.password) {
-    throw new BadRequestError("Missing required fields");
+    throw new BadRequestException("Missing required fields");
   }
   // get user by email
 
-  const maybeUser = await userRepository.getBy({email: userInfo.email});
+  const maybeUser = await userRepository.getBy({ email: userInfo.email });
   if (!maybeUser) {
-    throw new NotFoundError("User not found");
+    throw new NotFoundException("User not found");
   }
   if (maybeUser.password && maybeUser.salt) {
     // validate password
@@ -25,12 +25,12 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
         const userUpdated = await userRepository.update(maybeUser);
         return userUpdated;
       } catch (err) {
-        throw new UnexpectedError(`Unexpected error happened when generating token: ${err}`);
+        throw new UnexpectedException(`Unexpected error happened when generating token: ${err}`);
       }
     } else {
-      throw new NotAuthorizedError("Unauthorized");
+      throw new NotAuthorizedException("Unauthorized");
     }
   }
 
-  throw new UnexpectedError("Something unexpected happened");
+  throw new UnexpectedException("Something unexpected happened");
 };

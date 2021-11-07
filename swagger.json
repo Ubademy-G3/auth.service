@@ -15,10 +15,6 @@
         {
             "name": "Auth",
             "description": ""
-        },
-        {
-            "name": "Users",
-            "description": ""
         }
     ],
     "schemes": [
@@ -32,9 +28,9 @@
         "application/json"
     ],
     "paths": {
-        "/users": {
+        "/authorization/users": {
             "get": {
-                "tags": ["Users"],
+                "tags": ["Auth"],
                 "summary": "Get all registered users",
                 "description": "Returns a list containing all users",
                 "parameters": [
@@ -81,7 +77,7 @@
                 }
             },
             "post": {
-                "tags": ["Users"],
+                "tags": ["Auth"],
                 "summary": "Creates new user",
                 "description": "Returns created user",
                 "parameters": [
@@ -163,9 +159,9 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/authorization/users/{id}": {
             "get": {
-                "tags": ["Users"],
+                "tags": ["Auth"],
                 "summary": "Get user by id",
                 "description": "Returns a user based on a single ID",
                 "parameters": [
@@ -222,7 +218,7 @@
                 }
             },
             "put": {
-                "tags": ["Users"],
+                "tags": ["Auth"],
                 "summary": "Update user by id",
                 "description": "Returns updated user",
                 "parameters": [
@@ -307,7 +303,7 @@
                 }
             },
             "delete": {
-                "tags": ["Users"],
+                "tags": ["Auth"],
                 "summary": "Delete user by id",
                 "description": "Returns a user based on a single ID",
                 "parameters": [
@@ -361,75 +357,7 @@
                 }
             }
         },
-        "/auth/signup": {
-            "post": {
-                "tags": ["Auth"],
-                "summary": "Register a new user",
-                "description": "Returns created user",
-                "parameters": [
-                    {
-                        "name": "user",
-                        "in": "body",
-                        "description": "The user to register",
-                        "schema": {
-                            "required": [
-                                "email",
-                                "password"
-                            ],
-                            "properties": {
-                                "email": {
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "New user info",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string"
-                                },
-                                "email": {
-                                    "type": "string"
-                                },
-                                "password": {
-                                    "type": "password"
-                                },
-                                "token": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/login": {
+        "/authentication": {
             "post": {
                 "tags": ["Auth"],
                 "summary": "Log a user",
@@ -489,7 +417,7 @@
                         }
                     },
                     "404": {
-                        "description": "Bad request",
+                        "description": "Not found",
                         "schema": {
                             "type": "string"
                         }
@@ -501,9 +429,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/auth/verify-token": {
+            },
             "get": {
                 "tags": ["Auth"],
                 "summary": "Verify user token",
@@ -530,6 +456,202 @@
                                     "type": "string"
                                 }
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/authorization" : {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Registers new user",
+                "description": "Returns registered user",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to create",
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Registered user",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/password": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Sends reset password email",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email sent successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/password/{id}/{token}": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Updates user password",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "",
+                        "schema": {
+                            "required": [
+                                "password"
+                            ],
+                            "properties": {
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true
+                    },
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "password"
+                                },
+                                "token": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Not authorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {

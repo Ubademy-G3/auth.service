@@ -30,8 +30,6 @@ module.exports = class extends UserRepository {
 
   static async getBy(param) {
     const mongooseUser = await MongooseUser.findOne(param);
-    console.log(param)
-    console.log(mongooseUser)
     if (mongooseUser) {
       return new User(
         mongooseUser.id,
@@ -57,22 +55,32 @@ module.exports = class extends UserRepository {
 
   static async update(userEntity) {
     const {
-      id, email, password, token, salt,
+      id, email, token, password, salt,
     } = userEntity;
-    const mongooseUser = await MongooseUser.findByIdAndUpdate(id, {
-      email, password, token, salt,
-    }, { new: true });
-    if (mongooseUser) {
-      return new User(mongooseUser.id,
-        mongooseUser.email,
-        mongooseUser.password,
-        mongooseUser.token,
-        mongooseUser.salt);
+    try {
+      const mongooseUser = await MongooseUser.findByIdAndUpdate(id, {
+        email, token, password, salt,
+      }, { new: true });
+      if (mongooseUser) {
+        return new User(mongooseUser.id,
+          mongooseUser.email,
+          mongooseUser.password,
+          mongooseUser.token,
+          mongooseUser.salt);
+      }
+    } catch (e) {
+      return null;
     }
+
     return null;
   }
 
   static async delete(userId) {
-    return MongooseUser.findByIdAndRemove(userId);
+    try {
+      const res = await MongooseUser.findByIdAndRemove(userId);
+      return res;
+    } catch (e) {
+      return null;
+    }
   }
 };
