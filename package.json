@@ -41,6 +41,7 @@
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-plugin-html": "^5.0.5",
     "express": "^4.17.1",
+    "jsonschema": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb-connection-string-url": "^2.1.0",
     "mongoose": "^6.0.10",

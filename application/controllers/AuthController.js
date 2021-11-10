@@ -1,15 +1,21 @@
+const { validate } = require("jsonschema");
 const RegisterUser = require("../useCases/SignUp");
 const LogUser = require("../useCases/Login");
 const AuthenticateUser = require("../useCases/AuthenticateUser");
 const SendEmail = require("../useCases/SendPasswordResetEmail");
 const ResetPassword = require("../useCases/ResetPassword");
 const serialize = require("../serializers/UserSerializer");
+const USER_SCHEMA = require("../../domain/schemas/UserSchema.json");
+const RESET_PASSWORD_SCHEMA = require("../../domain/schemas/ResetPasswordSchema.json");
 const { UserAlreadyExistsException } = require("../../domain/exceptions/UserAlreadyExistsException");
 const { BadRequestException } = require("../exceptions/BadRequestException");
 const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
 const { NotAuthorizedException } = require("../../domain/exceptions/NotAuthorizedException");
 
 exports.signup = async (req, res) => {
+  if (!validate(req.body, USER_SCHEMA).valid) {
+    return res.status(400).json({ message: "Invalid or missing required fields" });
+  }
   const repository = req.app.serviceLocator.userRepository;
   const hasher = req.app.serviceLocator.hashManager;
   RegisterUser(repository, req.body, hasher)
@@ -29,9 +35,13 @@ exports.signup = async (req, res) => {
         message: "Internal server error",
       });
     });
+  return null;
 };
 
 exports.login = async (req, res) => {
+  if (!validate(req.body, USER_SCHEMA).valid) {
+    return res.status(400).json({ message: "Invalid or missing required fields" });
+  }
   const repository = req.app.serviceLocator.userRepository;
   const jwt = req.app.serviceLocator.tokenManager;
   const hasher = req.app.serviceLocator.hashManager;
@@ -57,6 +67,7 @@ exports.login = async (req, res) => {
         message: `Internal server error ${err.message}`,
       });
     });
+  return null;
 };
 
 exports.authenticate = async (req, res) => {
@@ -69,6 +80,9 @@ exports.authenticate = async (req, res) => {
 };
 
 exports.sendPasswordResetEmail = async (req, res) => {
+  if (!validate(req.body, RESET_PASSWORD_SCHEMA).valid) {
+    return res.status(400).json({ message: "Invalid or missing email" });
+  }
   const repository = req.app.serviceLocator.userRepository;
   const jwt = req.app.serviceLocator.tokenManager;
   const { mailer } = req.app.serviceLocator;
@@ -89,6 +103,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
         message: `Internal server error ${err.message}`,
       });
     });
+  return null;
 };
 
 exports.passwordReset = async (req, res) => {

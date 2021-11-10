@@ -72,7 +72,7 @@ describe("POST /authorization", () => {
       .expect(400)
       .then((response) => {
         const res = JSON.parse(response.text);
-        expect(res.message).toBe("Missing required fields");
+        expect(res.message).toBe("Invalid or missing required fields");
       });
   });
   test("Fails when email is missing", async () => {
@@ -81,7 +81,7 @@ describe("POST /authorization", () => {
       .expect(400)
       .then((response) => {
         const res = JSON.parse(response.text);
-        expect(res.message).toBe("Missing required fields");
+        expect(res.message).toBe("Invalid or missing required fields");
       });
   });
   test("Fails email already exists", async () => {
@@ -127,7 +127,7 @@ describe("POST /authentication", () => {
       .expect(400)
       .then((response) => {
         const res = JSON.parse(response.text);
-        expect(res.message).toBe("Missing required fields");
+        expect(res.message).toBe("Invalid or missing required fields");
       });
   });
   test("Fails when email is missing", async () => {
@@ -136,7 +136,7 @@ describe("POST /authentication", () => {
       .expect(400)
       .then((response) => {
         const res = JSON.parse(response.text);
-        expect(res.message).toBe("Missing required fields");
+        expect(res.message).toBe("Invalid or missing required fields");
       });
   });
   test("Fails when email not found", async () => {
@@ -226,7 +226,7 @@ describe("POST /authentication/password", () => {
       .expect(400)
       .then((response) => {
         const res = JSON.parse(response.text);
-        expect(res.message).toBe("Missing required fields");
+        expect(res.message).toBe("Invalid or missing email");
       });
   });
   test("Password reset returns user not found when invalid email", async () => {
