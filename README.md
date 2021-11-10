@@ -10,6 +10,7 @@ This service provides:
 * User registration
 * User authentication via email and password
 * Token verification
+* Password reset
 
 ## Directory structure
 
@@ -56,6 +57,10 @@ To run this application you need to define the following environment variables:
 ```
 JWT_SECRET_KEY=YOUR_SECRET_KEY
 AUTH_APIKEY=YOUR_AUTH_SERVICE_APIKEY
+USER=EMAIL_ADDRESS_SENDER #for password recovery
+PASS=EMAIL_PASSWORD_SENDER #for password recovery
+SERVICE=EMAIL_SERVICE
+PASSWORD_RESET_URL=PASSWORD_RESET_URL
 ```
 
 ## Build and Deploy Services

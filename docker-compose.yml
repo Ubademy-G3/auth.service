@@ -43,10 +43,14 @@ services:
       - mongo
     networks:
       - my-network
+      - external-net
 
 networks:
   my-network:
     driver: bridge
+  external-net:
+    external: 
+      name: ubademy
 
 volumes:
  mongodb:
