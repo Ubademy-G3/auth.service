@@ -14,7 +14,7 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
 
   const maybeUser = await userRepository.getBy({ email: userInfo.email });
   if (!maybeUser) {
-    logger.warn("User not found with email " + email);
+    logger.warn(`User not found with email ${userInfo.email}`);
     throw new NotFoundException("User not found");
   }
   if (maybeUser.password && maybeUser.salt) {

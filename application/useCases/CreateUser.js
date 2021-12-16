@@ -18,7 +18,7 @@ module.exports = async (userRepository, userInfo) => {
 
   const userAlreadyExists = await userRepository.getBy({ email: userInfo.email });
   if (userAlreadyExists) {
-    logger.warn("User already exists with email "+ email);
+    logger.warn(`User already exists with email ${userInfo.email}`);
     throw new UserAlreadyExistsException("User already exists with given email");
   }
   try {

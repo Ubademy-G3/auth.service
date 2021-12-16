@@ -10,7 +10,7 @@ module.exports = async (userInfo, userRepository, jwt, mailer) => {
 
   const userAlreadyExists = await userRepository.getBy({ email: userInfo.email });
   if (!userAlreadyExists) {
-    logger.warn("User not found with email " + email);
+    logger.warn(`User not found with email ${userInfo.email}`);
     throw new NotFoundException("User not found");
   }
 

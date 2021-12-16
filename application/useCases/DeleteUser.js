@@ -4,7 +4,7 @@ const logger = require("../logger")("DeleteUser.js");
 
 module.exports = async (userRepository, params) => {
   if (!params.id) {
-    logger.warn("Bad request: Missing id")
+    logger.warn("Bad request: Missing id");
     throw new BadRequestException("Missing required field");
   }
   const deleted = await userRepository.delete(params.id);
