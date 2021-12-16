@@ -47,6 +47,7 @@
     "mongoose": "^6.0.10",
     "nodemailer": "^6.7.0",
     "swagger-ui": "^2.2.10",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "winston": "^3.3.3"
   }
 }
