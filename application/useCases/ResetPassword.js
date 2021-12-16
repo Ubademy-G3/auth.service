@@ -24,7 +24,7 @@ module.exports = async (requestParams, requestBody, repository, jwt, hasher) => 
 
   const user = await repository.get(requestParams.userId);
   if (!user) {
-    logger.warn(`User ${user.id} not found`);
+    logger.warn(`User ${requestParams.userId} not found`);
     throw new NotFoundException("User Id not found");
   }
   const cred = hasher.setPassword(requestBody.password);
