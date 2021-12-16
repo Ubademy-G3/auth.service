@@ -11,9 +11,12 @@ const { UserAlreadyExistsException } = require("../../domain/exceptions/UserAlre
 const { BadRequestException } = require("../exceptions/BadRequestException");
 const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
 const { NotAuthorizedException } = require("../../domain/exceptions/NotAuthorizedException");
+const logger = require("../logger")("AuthController.js");
 
 exports.signup = async (req, res) => {
+  logger.debug("Sign Up new user");
   if (!validate(req.body, USER_SCHEMA).valid) {
+    logger.warn("Bad request: Invalid or missing required fields");
     return res.status(400).json({ message: "Invalid or missing required fields" });
   }
   const repository = req.app.serviceLocator.userRepository;
@@ -31,6 +34,7 @@ exports.signup = async (req, res) => {
           message: err.message,
         });
       }
+      logger.error(`Critical error while registering user: ${err.message}`);
       return res.status(500).send({
         message: "Internal server error",
       });
@@ -39,7 +43,9 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  logger.debug("User login");
   if (!validate(req.body, USER_SCHEMA).valid) {
+    logger.warn("Bad request: Invalid or missing required fields");
     return res.status(400).json({ message: "Invalid or missing required fields" });
   }
   const repository = req.app.serviceLocator.userRepository;
@@ -72,6 +78,7 @@ exports.login = async (req, res) => {
 
 exports.authenticate = async (req, res) => {
   const jwt = req.app.serviceLocator.tokenManager;
+  logger.debug("Authenticate user");
   AuthenticateUser(req.query, jwt)
     .then((msg) => res.status(200).json(msg))
     .catch((err) => res.status(500).send({
@@ -80,6 +87,7 @@ exports.authenticate = async (req, res) => {
 };
 
 exports.sendPasswordResetEmail = async (req, res) => {
+  logger.debug("Send password reset email");
   if (!validate(req.body, RESET_PASSWORD_SCHEMA).valid) {
     return res.status(400).json({ message: "Invalid or missing email" });
   }
@@ -99,6 +107,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
           message: err.message,
         });
       }
+      logger.error(`Critical error while sending recover email: ${err.message}`);
       return res.status(500).send({
         message: `Internal server error ${err.message}`,
       });
@@ -110,6 +119,7 @@ exports.passwordReset = async (req, res) => {
   const repository = req.app.serviceLocator.userRepository;
   const jwt = req.app.serviceLocator.tokenManager;
   const hasher = req.app.serviceLocator.hashManager;
+  logger.debug("Reset password");
   ResetPassword(req.params, req.body, repository, jwt, hasher)
     .then((msg) => res.status(200).json(msg))
     .catch((err) => {
@@ -128,6 +138,7 @@ exports.passwordReset = async (req, res) => {
           message: err.message,
         });
       }
+      logger.error(`Critical error while resetting password: ${err.message}`);
       return res.status(500).send({
         message: `Internal server error ${err.message}`,
       });

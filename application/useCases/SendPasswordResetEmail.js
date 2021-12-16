@@ -1,13 +1,16 @@
 const { NotFoundException } = require("../../domain/exceptions/NotFoundException");
 const { BadRequestException } = require("../exceptions/BadRequestException");
+const logger = require("../logger")("SendPasswordResetEmail.js");
 
 module.exports = async (userInfo, userRepository, jwt, mailer) => {
   if (!userInfo.email) {
+    logger.warn("Bad request: Missing email");
     throw new BadRequestException("Missing required fields");
   }
 
   const userAlreadyExists = await userRepository.getBy({ email: userInfo.email });
   if (!userAlreadyExists) {
+    logger.warn("User not found with email " + email);
     throw new NotFoundException("User not found");
   }
 
