@@ -63,13 +63,13 @@ jobs:
           run: heroku container:login
 
         - name: Tag container
-          run: docker tag auth.service registry.heroku.com/staging-auth-service-app/web
+          run: docker tag auth.service registry.heroku.com/staging-auth-service-app-v2/web
 
         - name: Push container
-          run: docker push registry.heroku.com/staging-auth-service-app/web
+          run: docker push registry.heroku.com/staging-auth-service-app-v2/web
 
         - name: Release container
-          run: heroku container:release web --app staging-auth-service-app
+          run: heroku container:release web --app staging-auth-service-app-v2
 
         - name: Set NODE_ENV to stage
-          run: heroku config:set NODE_ENV=stage --app staging-auth-service-app
+          run: heroku config:set NODE_ENV=stage --app staging-auth-service-app-v2
