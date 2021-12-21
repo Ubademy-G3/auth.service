@@ -13,6 +13,9 @@ const logger = createLogger({
       filename: "logs.log",
       level: "debug",
     }),
+    new transports.Console({
+      level: "debug",
+    }),
   ],
 });
 
