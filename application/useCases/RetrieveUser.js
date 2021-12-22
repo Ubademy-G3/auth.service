@@ -4,7 +4,9 @@ const logger = require("../logger")("RetrieveUser.js");
 
 module.exports = async (userRepository, user) => {
   if (!user.id) {
+    /* istanbul ignore next */
     logger.warn("Bad request: missing id");
+    /* istanbul ignore next */
     throw new BadRequestException("Missing required field");
   }
   const { id } = user;

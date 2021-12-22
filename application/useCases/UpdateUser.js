@@ -4,7 +4,9 @@ const logger = require("../logger")("UpdateUser.js");
 
 module.exports = async (userRepository, params, userInfo) => {
   if (!params.id) {
+    /* istanbul ignore next */
     logger.warn("Bad request: Missing id");
+    /* istanbul ignore next */
     throw new BadRequestException("Missing required field");
   }
 

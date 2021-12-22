@@ -6,13 +6,16 @@ const logger = require("../logger")("ResetPassword.js");
 const PASSWORD_MIN_LEN = 6;
 
 module.exports = async (requestParams, requestBody, repository, jwt, hasher) => {
+  /* istanbul ignore next */
   if (!requestParams.userId || !requestParams.token || !requestBody.password) {
     logger.warn("Bad request: Missing id, token or password");
     throw new BadRequestException("Missing required field");
   }
 
   if (requestBody.password.length < PASSWORD_MIN_LEN) {
+    /* istanbul ignore next */
     logger.warn("Bad request: Password must be at least 6 chars");
+    /* istanbul ignore next */
     throw new BadRequestException("Password must be at least 6 characters");
   }
 

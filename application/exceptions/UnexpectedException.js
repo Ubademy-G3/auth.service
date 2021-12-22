@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 class UnexpectedException extends Error {
   constructor(message) {
     super(message);
