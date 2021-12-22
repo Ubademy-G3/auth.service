@@ -78,4 +78,4 @@ This command deploys the services:
 ```docker-compose stop```
 
 
-You can try it out at <https://staging-auth-service-app.herokuapp.com/api-docs>
+You can try it out at <https://staging-auth-service-app-v2.herokuapp.com/api-docs>
