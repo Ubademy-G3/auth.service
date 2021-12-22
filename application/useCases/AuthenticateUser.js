@@ -5,7 +5,9 @@ module.exports = async (params, jwt) => {
   const givenToken = params.token;
   // validate input
   if (!givenToken) {
+    /* istanbul ignore next */
     logger.warn("Bad request: Missing token");
+    /* istanbul ignore next */
     throw new BadRequestException("Missing required field token");
   }
 

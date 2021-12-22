@@ -7,7 +7,9 @@ const logger = require("../logger")("Login.js");
 module.exports = async (userRepository, userInfo, jwt, hasher) => {
   // validate input
   if (!userInfo.email || !userInfo.password) {
+    /* istanbul ignore next */
     logger.warn("Bad request: Missing email or password");
+    /* istanbul ignore next */
     throw new BadRequestException("Missing required fields");
   }
   // get user by email
@@ -28,14 +30,17 @@ module.exports = async (userRepository, userInfo, jwt, hasher) => {
         const userUpdated = await userRepository.update(maybeUser);
         return userUpdated;
       } catch (err) {
+        /* istanbul ignore next */
         logger.error(`Critical error when generating token: ${err.message}`);
+        /* istanbul ignore next */
         throw new UnexpectedException(`Unexpected error happened when generating token: ${err}`);
       }
     } else {
       logger.warn("User not authorized: invalid token");
       throw new NotAuthorizedException("Unauthorized");
     }
+    /* istanbul ignore next */
   }
-
+  /* istanbul ignore next */
   throw new UnexpectedException("Something unexpected happened");
 };

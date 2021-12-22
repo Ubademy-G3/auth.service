@@ -78,6 +78,7 @@ module.exports = class extends UserRepository {
           mongooseUser.salt);
       }
     } catch (e) {
+      /* istanbul ignore next */
       return null;
     }
 
@@ -90,7 +91,9 @@ module.exports = class extends UserRepository {
       const res = await MongooseUser.findByIdAndRemove(userId);
       logger.info("User successfully deleted");
       return res;
+      /* istanbul ignore next */
     } catch (e) {
+      /* istanbul ignore next */
       return null;
     }
   }

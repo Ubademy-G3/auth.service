@@ -10,7 +10,7 @@ module.exports = async (userRepository, userInfo) => {
     logger.warn("Bad request: Missing email or password");
     throw new BadRequestException("Missing required fields");
   }
-
+  /* istanbul ignore next */
   if (userInfo.password.length < PASSWORD_MIN_LEN) {
     logger.warn("Bad request: Password must be at least 6 chars");
     throw new BadRequestException("Password must be at least 6 characters");
@@ -24,7 +24,9 @@ module.exports = async (userRepository, userInfo) => {
   try {
     return userRepository.create(userInfo);
   } catch (err) {
+    /* istanbul ignore next */
     logger.error(`Critical error when creating user: ${err.message}`);
+    /* istanbul ignore next */
     throw new UnexpectedException(`Unexpected error happened when creating user ${err}`);
   }
 };

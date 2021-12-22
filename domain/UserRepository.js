@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 module.exports = class {
   static create() {
     throw new Error("ERR_METHOD_NOT_IMPLEMENTED");

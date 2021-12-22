@@ -4,7 +4,9 @@ const logger = require("../logger")("SendPasswordResetEmail.js");
 
 module.exports = async (userInfo, userRepository, jwt, mailer) => {
   if (!userInfo.email) {
+    /* istanbul ignore next */
     logger.warn("Bad request: Missing email");
+    /* istanbul ignore next */
     throw new BadRequestException("Missing required fields");
   }
 
@@ -17,8 +19,11 @@ module.exports = async (userInfo, userRepository, jwt, mailer) => {
   let token = "";
   let userUpdated = userAlreadyExists;
   if (!userUpdated.token) {
+    /* istanbul ignore next */
     token = await jwt.generateToken(userUpdated.id);
+    /* istanbul ignore next */
     userUpdated.token = token;
+    /* istanbul ignore next */
     userUpdated = await userRepository.update(userUpdated);
   }
 

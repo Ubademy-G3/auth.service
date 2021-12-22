@@ -3,6 +3,7 @@ const { NotFoundException } = require("../../domain/exceptions/NotFoundException
 const logger = require("../logger")("DeleteUser.js");
 
 module.exports = async (userRepository, params) => {
+  /* istanbul ignore next */
   if (!params.id) {
     logger.warn("Bad request: Missing id");
     throw new BadRequestException("Missing required field");
