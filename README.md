@@ -43,6 +43,13 @@ This service provides:
 └── tests
 ```
 
+# Tech Stack
+
+* NodeJS
+* Express (as web framework for NodeJS applications)
+* MongoDB (as NoSQL database)
+
+
 # Local Environment
 
 ## Requirements 
